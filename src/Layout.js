@@ -21,6 +21,10 @@ class LayoutComponent extends Component {
           <Icon type="team" />
           <span className="nav-text">歌单管理</span>
         </Menu.Item>
+        <Menu.Item key="/playlists">
+          <Icon type="user" />
+          <span className="nav-text">歌单列表</span>
+        </Menu.Item>
         <Menu.Item key="/songs">
           <Icon type="shop" />
           <span className="nav-text">歌曲管理</span>
