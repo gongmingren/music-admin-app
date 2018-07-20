@@ -1,26 +1,63 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
+import MusicSelect from '../component/MusicSelect';
+import Remote from '../Remote';
+
 
 class PlayLists extends Component {
     state = {  
-        data:[]
+        data:[],
+        selectMusic: false,
+        selectMusicKeys:[]
     };
     componentDidMount() {
-        fetch('/api/playlist/query',{
-            method:'GET',
-            headers:{
-                'content-type':'application/json'
-            }
-        })
-        .then(function(response){
-            return response.json();
-        })
-        .then(data =>{
-            this.setState({
-                data:data
-            });
-        });
+        this.fetch();
     }
+    fetch(){
+        Remote(
+            '/api/playlist/query',
+            {
+              method:'GET'
+            },
+            data =>{
+                this.setState({
+                    data:data
+                });
+            }
+        );
+    }
+        openSelectMusic = record =>{
+            this.setState({
+                selectMusic:true,
+                playListId:record.id,
+                selectMusicKeys: record.musicKeys
+            });
+        };
+        closeSelectMusic = () =>{
+            this.setState({
+                selectMusic: false,
+                playListId: null,
+                selectMusicKeys:[]
+            });
+        };
+
+        handlerSelectMusic = keys =>{
+            this.closeSelectMusic();
+            Remote(
+                '/api/playlist/update',
+                {
+                    body:JSON.stringify({
+                        id:this.state.playListId,
+                        keys
+                    }),
+                    method:'POST'
+                },
+                data =>{
+                    this.fetch();
+                }
+            );
+        };
+        
     render() {
         const columns = [
             {
@@ -38,14 +75,39 @@ class PlayLists extends Component {
                 dataIndex:'desc',
                 key:'desc'
             },
+            {
+                title:'操作',
+                key:'action',
+                render:(text,record) =>{
+                    return(
+                        <span>
+                            <a
+                            href="javascript:;"
+                            onClick={() =>{
+                                this.openSelectMusic(record);
+                            }}
+                            > 选择歌曲
+                            </a>
+                        </span>
+                    )
+                }
+            }
         ];
         return (
+          <div>
             <Table
             columns={columns}
             dataSource={this.state.data}
             pagination={false}
             rowKey={record => record.id}
             />
+            <MusicSelect
+               visible={this.state.selectMusic}
+               selectedKeys={this.state.selectMusicKeys}
+               handlerSelectMusic={this.handlerSelectMusic}
+               closeSelectMusic={this.closeSelectMusic}
+            />
+            </div>
         );
     }
 }
