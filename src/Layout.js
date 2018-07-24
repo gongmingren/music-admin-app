@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
+import ReactPlayer from 'react-player';
+import {connect} from 'react-redux';
+
 const { Header, Content, Footer, Sider } = Layout;
 class LayoutComponent extends Component {
     state = {key:'/'};
@@ -33,6 +36,13 @@ class LayoutComponent extends Component {
     </Sider>
     <Layout style={{ marginLeft: 200 }}>
       <Header style={{ background: '#fff', padding: 0 }} />
+      <ReactPlayer
+      height={30}
+      width="100%"
+      url={this.props.playUrl}
+      playing
+      controls
+      />{' '}
       <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
         <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
           {this.props.body}
@@ -46,5 +56,10 @@ class LayoutComponent extends Component {
         );
     }
 }
+const mapStateToProps = state =>{
+  return{
+    playUrl: state.src
+  };
+};
 
-export default withRouter(LayoutComponent);
+export default connect(mapStateToProps)(withRouter(LayoutComponent));

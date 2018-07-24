@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Table } from 'antd';
 import MusicSelect from '../component/MusicSelect';
 import Remote from '../Remote';
+import { connect } from 'react-redux'; 
+import { play } from '../actions';
 
 
 class PlayLists extends Component {
@@ -88,6 +90,17 @@ class PlayLists extends Component {
                             }}
                             > 选择歌曲
                             </a>
+                            <a
+                            href="javascript:;"
+                            onClick={() =>{
+                                this.props.dispatch(
+                                    play(
+                                        'http://qgt-document.oss-cn-beijing.aliyuncs.com/Hello.mp3'
+                                    )
+                                );
+                            }}
+                            > 播放歌曲
+                            </a>
                         </span>
                     )
                 }
@@ -112,4 +125,4 @@ class PlayLists extends Component {
     }
 }
 
-export default PlayLists;
+export default connect()(PlayLists);
