@@ -3,6 +3,14 @@ const player = (state = {},action)=>{
         case 'PLAY':
         return{
             ...state,
+            src:action.src,
+            musicTitle:action.musicTitle,
+            playLists:action.playLists
+        };
+        case 'SWITCH':
+        return{
+            ...state,
+            musicTitle:action.musicTitle,
             src:action.src
         };
         default:

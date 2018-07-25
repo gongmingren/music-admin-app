@@ -1,4 +1,12 @@
-export const play = src => ({
+export const play = (src,musicTitle,playLists) => ({
     type: 'PLAY',
-    src
+    src,
+    musicTitle,
+    playLists
+});
+
+export const switchPlay = (src,musicTitle) => ({
+    type:'SWITCH',
+    src,
+    musicTitle
 });

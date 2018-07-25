@@ -93,12 +93,19 @@ class PlayLists extends Component {
                             <a
                             href="javascript:;"
                             onClick={() =>{
+                                if (!record.musicKeys){
+                                    return;
+                                }
+                                Remote(
+                                    '/api/music/query?ids=' +JSON.stringify(record.musicKeys),
+                                    { method:'GET'},
+                                    data =>{
                                 this.props.dispatch(
-                                    play(
-                                        'http://qgt-document.oss-cn-beijing.aliyuncs.com/Hello.mp3'
-                                    )
+                                    play(data[0].url,data[0].title,data)
                                 );
-                            }}
+                            }
+                        );
+                     }}
                             > 播放歌曲
                             </a>
                         </span>

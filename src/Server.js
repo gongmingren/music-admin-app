@@ -11,22 +11,28 @@ const playlistDatas =[
         id: 1,
         name: '测试歌单1',
         cover: 'http://xx.com/xx.jpg',
-        desc: '测试歌单描述'
+        desc: '测试歌单描述',
+        musicKeys:['515143071']
     }
 ];
 //测试歌 123
 const musicDatas = [
     {
-        id:1,
-        title:'测试歌'
+        id:'515143071',
+        title:'Revive',
+        url:'http://music.163.com/song/media/outer/url?id=515143071.mp3'
     },
     {
-        id:2,
-        title:'测试歌2'
+        id:'16435049',
+        title:'Someone Like You',
+        url:'http://music.163.com/song/media/outer/url?id=16435049.mp3'
+
     },
     {
-        id:3,
-        title:'测试歌3'
+        id:'3935139',
+        title:'Breath and Life',
+        url:'http://music.163.com/song/media/outer/url?id=3935139.mp3'
+
     }
 ];
 /**
@@ -60,7 +66,20 @@ app.get('/api/playlist/query',function(req,res){
 
 //获取歌曲的数据
 app.get('/api/music/query',function(req,res){
-    res.json(musicDatas);
+    if(req.query.ids){
+        const ids = JSON.parse(req.query.ids);
+        const result = [];
+        ids.map(id =>{
+            musicDatas.map(mid=>{
+            if(id === mid.id){
+                result.push(mid);
+            }
+        });
+    });
+    res.json(result);
+    return;
+}
+ res.json(musicDatas);
 });
 
 app.listen(4000,function(){
